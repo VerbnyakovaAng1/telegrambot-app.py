@@ -1,0 +1,35 @@
+import telebot
+import requests
+import json
+
+T0KEN = '5983431214:AAEoWQ5Oes--oLfY35-uoKk2rUWApI48zQc'
+
+bot = telebot.TeleBot(T0KEN)
+
+keys = {
+    'биткоин': 'BTC',
+    'рубль': 'RUB',
+    'доллар': 'USD',
+    
+    @bot.message_handler(commands=['start','help'])
+def echo_test(message: telebot.types.Message):
+    text = 'Чтобы начать работу введите команду боту в следующем формате: \nИмя валюты \
+В какую валюту первая валюта \
+количество первой валюты \ Увидеть список всех имеющихся валют /values'
+    bot.reply_to(message, text)
+
+
+@bot.message_handler(commands=['values'])
+def values(message: telebot.types.Message):
+    text = 'Доступные валюты:'
+    for key in keys.keys():
+       text = '\n'.join((text, key, ))
+    bot.reply_to(message, text)
+
+@bot.message_handler(content_types=['text', ])
+def convert(messege: telebot.types.Message):
+
+text = f'Цена {amount} {quote} в {base} - {total_base}'
+bot.send_message(messege.chat.id, text)
+
+bot.polling()
